@@ -2,10 +2,15 @@ import App from 'next/app';
 import React from 'react';
 import withReduxStore from '../lib/with-redux-store';
 import { Provider } from 'react-redux';
+
 // global styles
 import '../scss/main.scss';
 
 class MyApp extends App {
+  // componentDidMount() {
+  //   this.props.reduxStore.dispatch(loadUser());
+  // }
+
   render() {
     const { Component, pageProps, reduxStore } = this.props;
     return (
