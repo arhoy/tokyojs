@@ -1,4 +1,5 @@
 import React from 'react';
+import Head from 'next/head';
 import { connect } from 'react-redux';
 import { incrementCount, decrementCount } from '../actions/counters';
 import Layout from '../layout/Layout';
@@ -16,6 +17,14 @@ const Index = ({ counters, incrementCount, decrementCount }) => {
 
   return (
     <Layout>
+      <Head>
+        <title>Tokyo JS Home Page</title>
+        <meta
+          name="index page"
+          content="initial-scale=1.0, width=device-width"
+          key="index"
+        />
+      </Head>
       <Title> Redux with Next Boiler Plate</Title>
       <p>Counter {count} </p>
       <Button onClick={decrement}>-1</Button>
