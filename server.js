@@ -3,15 +3,14 @@ const express = require('express');
 
 const connectDB = require('./config/db');
 const path = require('path');
-const pug = require('pug');
 
 const app = express();
 
 app.set('view engine', 'pug');
-app.set('views',path.join(__dirname,'views'));
+app.set('views', path.join(__dirname, 'views'));
 
 // serving up the static files, not using anything in CLIENT REACT
-app.use(express.static(path.join(__dirname,'public')));
+app.use(express.static(path.join(__dirname, 'public')));
 
 const AppError = require('./utils/appError');
 const globalErrorHandler = require('./routes/api/error');
@@ -20,9 +19,7 @@ const globalErrorHandler = require('./routes/api/error');
 connectDB();
 
 // Init MiddleWare for put and post requests.
-app.use(express.json({extended:false}));
-
-
+app.use(express.json({ extended: false }));
 
 // Define the routes
 app.use('/api/tasks', require('./routes/api/tasks'));
@@ -35,31 +32,29 @@ app.use('/api/reviews', require('./routes/api/reviews'));
 app.use('/', require('./routes/pages/views.js'));
 
 // 404 route
-app.all('*', ( req, res, next ) => {
-
-  next(new AppError( `Requested route: ${req.originalUrl} not found!`, 404));
-})
+app.all('*', (req, res, next) => {
+  next(new AppError(`Requested route: ${req.originalUrl} not found!`, 404));
+});
 
 // ERROR HANDLING MIDDLEWARE
 app.use(globalErrorHandler);
 
 // Serve static assets in production
 if (process.env.NODE_ENV === 'production') {
-    // Set static folder
-    app.use(express.static('client/build'));
-  
-    app.get('*', (req, res) => {
-      res.sendFile(path.resolve(__dirname, 'client', 'build', 'index.html'));
-    });
-  }
-  
-  const PORT = process.env.PORT || 3000;
-  
-  app.listen(PORT, () => console.log(`Server started on port ${PORT}`));
+  // Set static folder
+  app.use(express.static('client/build'));
 
+  app.get('*', (req, res) => {
+    res.sendFile(path.resolve(__dirname, 'client', 'build', 'index.html'));
+  });
+}
 
-  // UNHANDLED REJECTIONS
-  process.on('unhandledRejection', err => {
-    console.log(err.name, err.message, 'Unhandled Rejection error!');
-    process.exit(1);
-  })
+const PORT = process.env.PORT || 5000;
+
+app.listen(PORT, () => console.log(`Server started on port ${PORT}`));
+
+// UNHANDLED REJECTIONS
+process.on('unhandledRejection', err => {
+  console.log(err.name, err.message, 'Unhandled Rejection error!');
+  process.exit(1);
+});
