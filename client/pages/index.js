@@ -1,18 +1,33 @@
 import React from 'react';
-import Link from 'next/link';
-import Layout from '../layout/Layout';
-import styled from 'styled-components';
+import { connect } from 'react-redux';
+import { startClock, serverRenderClock } from '../store';
+import Examples from '../components/examples';
 
-const Title = styled.h1`
-  font-size: 1.5;
-  text-align: center;
-  color: palevioletred;
-`;
-const Index = () => (
-  <Layout>
-    <Title> Tokyo JS </Title>
-    <p>Start your Japa Venture </p>
-  </Layout>
-);
+class Index extends React.Component {
+  static getInitialProps({ reduxStore, req }) {
+    const isServer = !!req;
+    // DISPATCH ACTIONS HERE ONLY WITH `reduxStore.dispatch`
+    reduxStore.dispatch(serverRenderClock(isServer));
 
-export default Index;
+    return {};
+  }
+
+  componentDidMount() {
+    // DISPATCH ACTIONS HERE FROM `mapDispatchToProps`
+    // TO TICK THE CLOCK
+    this.timer = setInterval(() => this.props.startClock(), 1000);
+  }
+
+  componentWillUnmount() {
+    clearInterval(this.timer);
+  }
+
+  render() {
+    return <Examples />;
+  }
+}
+const mapDispatchToProps = { startClock };
+export default connect(
+  null,
+  mapDispatchToProps
+)(Index);
