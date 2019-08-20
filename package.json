@@ -31,7 +31,7 @@
     "start": "node server",
     "server": "set NODE_ENV=development && nodemon server",
     "start:prod": "set NODE_ENV=production && nodemon server.js",
-    "client": "npm start --prefix client",
+    "client": "npm dev --prefix client",
     "dev": "concurrently \"npm run server\" \"npm run client\"",
     "heroku-postbuild": "NPM_CONFIG_PRODUCTION=false npm install --prefix client && npm run build --prefix client",
     "predeploy": "npm run build",

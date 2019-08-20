@@ -6,15 +6,6 @@ const path = require('path');
 
 const app = express();
 
-app.set('view engine', 'pug');
-app.set('views', path.join(__dirname, 'views'));
-
-// serving up the static files, not using anything in CLIENT REACT
-app.use(express.static(path.join(__dirname, 'public')));
-
-const AppError = require('./utils/appError');
-const globalErrorHandler = require('./routes/api/error');
-
 // connect db
 connectDB();
 
@@ -27,27 +18,6 @@ app.use('/api/users', require('./routes/api/users'));
 app.use('/api/auth', require('./routes/api/auth'));
 app.use('/api/tours', require('./routes/api/tours'));
 app.use('/api/reviews', require('./routes/api/reviews'));
-
-// Rendering the pages
-app.use('/', require('./routes/pages/views.js'));
-
-// 404 route
-app.all('*', (req, res, next) => {
-  next(new AppError(`Requested route: ${req.originalUrl} not found!`, 404));
-});
-
-// ERROR HANDLING MIDDLEWARE
-app.use(globalErrorHandler);
-
-// Serve static assets in production
-if (process.env.NODE_ENV === 'production') {
-  // Set static folder
-  app.use(express.static('client/build'));
-
-  app.get('*', (req, res) => {
-    res.sendFile(path.resolve(__dirname, 'client', 'build', 'index.html'));
-  });
-}
 
 const PORT = process.env.PORT || 5000;
 
