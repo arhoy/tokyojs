@@ -1,33 +1,44 @@
 import React from 'react';
 import { connect } from 'react-redux';
-import { startClock, serverRenderClock } from '../store';
-import Examples from '../components/examples';
+import { incrementCount, decrementCount } from '../actions/counters';
+import Layout from '../layout/Layout';
+import styled from 'styled-components';
 
-class Index extends React.Component {
-  static getInitialProps({ reduxStore, req }) {
-    const isServer = !!req;
-    // DISPATCH ACTIONS HERE ONLY WITH `reduxStore.dispatch`
-    reduxStore.dispatch(serverRenderClock(isServer));
+const Index = ({ counters, incrementCount, decrementCount }) => {
+  const { count } = counters;
+  const increment = () => {
+    incrementCount();
+  };
 
-    return {};
-  }
+  const decrement = () => {
+    decrementCount();
+  };
 
-  componentDidMount() {
-    // DISPATCH ACTIONS HERE FROM `mapDispatchToProps`
-    // TO TICK THE CLOCK
-    this.timer = setInterval(() => this.props.startClock(), 1000);
-  }
+  return (
+    <Layout>
+      <Title> Redux with Next Boiler Plate</Title>
+      <p>Counter {count} </p>
+      <Button onClick={decrement}>-1</Button>
+      <Button onClick={increment}>+1</Button>
+    </Layout>
+  );
+};
 
-  componentWillUnmount() {
-    clearInterval(this.timer);
-  }
+const mapStateToProps = state => ({
+  counters: state.counters
+});
 
-  render() {
-    return <Examples />;
-  }
-}
-const mapDispatchToProps = { startClock };
 export default connect(
-  null,
-  mapDispatchToProps
+  mapStateToProps,
+  { incrementCount, decrementCount }
 )(Index);
+
+// STYLES
+const Title = styled.h1`
+  color: red;
+`;
+
+const Button = styled.button`
+  padding: 0.5rem;
+  margin: 1rem;
+`;
