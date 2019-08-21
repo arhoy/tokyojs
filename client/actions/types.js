@@ -13,3 +13,4 @@ export const LOGOUT = 'LOGOUT';
 
 // TOURS
 export const GET_TOURS = 'GET_TOURS';
+export const GET_TOURS_ERROR = 'GET_TOURS_ERROR';

@@ -1,6 +1,6 @@
 //updated my packages!
 const express = require('express');
-
+const cors = require('cors');
 const connectDB = require('./config/db');
 const path = require('path');
 
@@ -8,6 +8,10 @@ const app = express();
 
 // connect db
 connectDB();
+
+// cors
+// todo: whitelist IPS
+app.use(cors());
 
 // Init MiddleWare for put and post requests.
 app.use(express.json({ extended: false }));

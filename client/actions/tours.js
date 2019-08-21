@@ -1,14 +1,17 @@
 import axios from 'axios';
 
-import { GET_TOURS } from './types';
+import { GET_TOURS, GET_TOURS_ERROR } from './types';
 
-export const getTours = () => dispatch => {
+export const getTours = () => async dispatch => {
   try {
-      const res = await axios.get('/api/tours');
-      console.log(res.data);
+    const res = await axios.get('http://localhost:5000/api/tours');
+    dispatch({
+      type: GET_TOURS,
+      payload: res.data.tours // tours
+    });
   } catch (error) {
     dispatch({
-      type: GET_TOUR_ERROR,
+      type: GET_TOURS_ERROR,
       payload: { msg: 'Unable to get tours' }
     });
   }

@@ -1,20 +1,16 @@
+// server is on localhost:5000
+
 import React from 'react';
 import Head from 'next/head';
-import { connect } from 'react-redux';
-import { incrementCount, decrementCount } from '../actions/counters';
-import Layout from '../layout/Layout';
+import axios from 'axios';
+
 import styled from 'styled-components';
 
-const Index = ({ counters, incrementCount, decrementCount }) => {
-  const { count } = counters;
-  const increment = () => {
-    incrementCount();
-  };
+import Layout from '../layout/Layout';
+import Tour from '../components/Tours/Tour';
 
-  const decrement = () => {
-    decrementCount();
-  };
-
+const Index = ({ tours }) => {
+  //Get the tours data
   return (
     <Layout>
       <Head>
@@ -26,28 +22,36 @@ const Index = ({ counters, incrementCount, decrementCount }) => {
         />
       </Head>
       <Title> Redux with Next Boiler Plate</Title>
-      <p>Counter {count} </p>
-      <Button onClick={decrement}>-1</Button>
-      <Button onClick={increment}>+1</Button>
+      <div className="Tours">
+        {tours.data.map(tour => (
+          <Tour
+            key={tour.id}
+            name={tour.name}
+            price={tour.price}
+            slug={tour.slug}
+            ratingsAverage={tour.ratingsAverage}
+            nextStartDate={tour.startDates[0]}
+            summary={tour.summary}
+            startingAt={tour.startLocation.description}
+            maxGroupSize={tour.maxGroupSize}
+            imageCover={tour.imageCover}
+            difficulty={tour.difficulty}
+          />
+        ))}
+      </div>
     </Layout>
   );
 };
 
-const mapStateToProps = state => ({
-  counters: state.counters
-});
+export default Index;
 
-export default connect(
-  mapStateToProps,
-  { incrementCount, decrementCount }
-)(Index);
+// on page load get tours
+Index.getInitialProps = async () => {
+  const res = await axios.get('http://localhost:5000/api/tours');
+  return { tours: res.data };
+};
 
 // STYLES
 const Title = styled.h1`
   color: red;
-`;
-
-const Button = styled.button`
-  padding: 0.5rem;
-  margin: 1rem;
 `;
