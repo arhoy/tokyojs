@@ -1,9 +1,7 @@
+// global styles to import into _app.js
 @import 'abstracts/mixins';
 @import 'abstracts/variables';
 
 @import 'base/animations';
 @import 'base/base';
 @import 'layout/layout';
-
-// components
-@import 'components/tours';

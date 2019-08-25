@@ -26,6 +26,7 @@ const Index = ({ tours }) => {
         {tours.data.map(tour => (
           <Tour
             key={tour.id}
+            id = {tour.id}
             name={tour.name}
             price={tour.price}
             slug={tour.slug}
