@@ -13,6 +13,9 @@ const Header = () => {
         <Link href="/about">
           <a> About Us </a>
         </Link>
+        <Link href="/login">
+          <a> Login </a>
+        </Link>
       </NavLinks>
     </Nav>
   );
