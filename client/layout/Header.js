@@ -1,27 +1,40 @@
 import Link from 'next/link';
 import styled from 'styled-components';
+import { connect } from 'react-redux';
 
 // to do: style a make mobile responsive
-const Header = () => {
+const Header = ({ auth }) => {
+  console.log(auth.isAuthenticated);
   return (
     <Nav>
       <Logo> Tokyo JS </Logo>
       <NavLinks>
-        <Link href="/">
+        <Link href='/'>
           <a> Home </a>
         </Link>
-        <Link href="/about">
+        <Link href='/about'>
           <a> About Us </a>
         </Link>
-        <Link href="/login">
-          <a> Login </a>
-        </Link>
+        {auth.isAuthenticated ? (
+          <a> Logout </a>
+        ) : (
+          <Link href='/auth/login'>
+            <a> Login </a>
+          </Link>
+        )}
       </NavLinks>
     </Nav>
   );
 };
 
-export default Header;
+const mapStateToProps = state => ({
+  auth: state.auth
+});
+
+export default connect(
+  mapStateToProps,
+  {}
+)(Header);
 
 const Nav = styled.nav`
   background-color: red;
